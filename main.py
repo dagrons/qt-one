@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, QPushButton, QListWidget, QStackedWidget, QStyle, QLabel
 )
 
+from func.page.file_processor import FileProcessorWidget
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -22,7 +24,7 @@ class MainWindow(QMainWindow):
         self.main_layout = QHBoxLayout(main_widget)
 
         apps = {
-            "Page1": QLabel("page1"),
+            "进度条": FileProcessorWidget(),
             "Page2": QLabel("page2"),
             "Page3": QLabel("page3")
         }
