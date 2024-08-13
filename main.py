@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
-    QHBoxLayout, QPushButton, QListWidget, QStackedWidget
+    QHBoxLayout, QPushButton, QListWidget, QStackedWidget, QStyle, QLabel
 )
 
 
@@ -21,42 +21,32 @@ class MainWindow(QMainWindow):
         # 创建主布局
         self.main_layout = QHBoxLayout(main_widget)
 
+        apps = {
+            "Page1": QLabel("page1"),
+            "Page2": QLabel("page2"),
+            "Page3": QLabel("page3")
+        }
+
         # 创建Sidebar（使用QListWidget作为选项）
         self.sidebar = QListWidget()
-        self.sidebar.addItem("Page 1")
-        self.sidebar.addItem("Page 2")
-        self.sidebar.addItem("Page 3")
-        self.sidebar.currentRowChanged.connect(self.display_page)
 
         # 创建StackedWidget，用于右侧显示页面内容
         self.pages = QStackedWidget()
 
-        # 创建三个页面并添加到StackedWidget
-        self.page1 = QWidget()
-        self.page2 = QWidget()
-        self.page3 = QWidget()
-
-        self.page1.setLayout(QVBoxLayout())
-        self.page1.layout().addWidget(QPushButton("Content of Page 1"))
-
-        self.page2.setLayout(QVBoxLayout())
-        self.page2.layout().addWidget(QPushButton("Content of Page 2"))
-
-        self.page3.setLayout(QVBoxLayout())
-        self.page3.layout().addWidget(QPushButton("Content of Page 3"))
-
-        self.pages.addWidget(self.page1)
-        self.pages.addWidget(self.page2)
-        self.pages.addWidget(self.page3)
+        # 配置SideBar和Pages
+        for k, v in apps.items():
+            self.sidebar.addItem(k)
+            self.pages.addWidget(v)
+        self.sidebar.currentRowChanged.connect(self.display_page)
 
         # 创建一个用于隐藏Sidebar的图标按钮
         self.close_sidebar_btn = QPushButton()
-        self.close_sidebar_btn.setFixedSize(30, 30)
+        self.close_sidebar_btn.setIcon(self.style().standardIcon(getattr(QStyle, "SP_TitleBarCloseButton")))
         self.close_sidebar_btn.clicked.connect(self.toggle_sidebar)
 
         # 创建一个用于展开Sidebar的图标按钮（初始隐藏）
         self.open_sidebar_btn = QPushButton()
-        self.open_sidebar_btn.setFixedSize(30, 30)
+        self.open_sidebar_btn.setIcon(self.style().standardIcon(getattr(QStyle, "SP_ArrowRight")))  # 替换为你的展开图标路径
         self.open_sidebar_btn.clicked.connect(self.toggle_sidebar)
         self.open_sidebar_btn.hide()
 
